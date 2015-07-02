@@ -70,7 +70,7 @@ class Game(object):
             r = -1
         return r
 
-class RandomPlayer(object):
+class Player(object):
     def __init__(self):
         self.played_game = 0
         self.win = 0
@@ -94,9 +94,7 @@ class RandomPlayer(object):
 
 
     def action(self):
-        r = self.rng.randint(2)
-        a = "hit" if r == 0 else "stick"
-        return a
+        raise NotImplementedError("Subclass must implement abstract method")
 
     def simulate(self, episode = 20):
         for i in xrange(1, episode + 1):
@@ -107,6 +105,12 @@ class RandomPlayer(object):
                 self.win += 1
 
         print "Win Ratio: %{0}".format(100 * float(self.win) / self.played_game)
+
+class RandomPlayer(Player):
+    def action(self):
+        r = self.rng.randint(2)
+        a = "hit" if r == 0 else "stick"
+        return a
 
 if __name__ == "__main__":
 
