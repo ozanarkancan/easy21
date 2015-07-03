@@ -13,8 +13,8 @@ class MonteCarloPlayer(Player):
         self.N = {}
         for p_sum in range(1,22):
             for dealer in range(1,11):
-                self.Q[(p_sum, dealer, "hit")] = self.rng.randint(-3, 3)
-                self.Q[(p_sum, dealer, "stick")] = self.rng.randint(-3, 3)
+                self.Q[(p_sum, dealer, "hit")] = self.rng.uniform(-1, 1)
+                self.Q[(p_sum, dealer, "stick")] = self.rng.uniform(-1, 1)
                 self.N[(p_sum, dealer)] = 0
     
     def play(self):
