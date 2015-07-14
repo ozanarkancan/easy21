@@ -1,6 +1,7 @@
 import numpy as np
 from montecarlo_player import *
 from random_player import *
+from sarsa_lambda_player import *
 import logging
 import argparse
 import pylab as p
@@ -15,14 +16,30 @@ def get_arg_parser():
         help="Number of episodes")
     parser.add_argument("-plot_v", default=False, type=bool,
         help="Plot value function")
-
+    parser.add_argument("-log", default=1, type=int,
+        help="Logging level")
+    parser.add_argument("-lambda", default=1, type=float,
+        help="Lambda")
+    parser.add_argument("-gamma", default=1, type=float,
+        help="Gamma")
     return parser
 
-def get_agent(agent_type):
+def get_log_level(level):
+    levels = {}
+    levels[0] = logging.DEBUG
+    levels[1] = logging.INFO
+    levels[2] = logging.WARNING
+    levels[3] = logging.ERROR
+    levels[4] = logging.CRITICAL
+
+    return levels[level]
+
+def get_agent(args):
+    agent_type = args["agent"]
     if agent_type == "mc":
         return MonteCarloPlayer()
     elif agent_type == "sarsa":
-        raise NotImplementedError("Sarsa is not implemented")
+        return SarsaLambdaPlayer(args["lambda"], args["gamma"])
     else:
         return RandomPlayer()
 
@@ -52,12 +69,13 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
     
     f_name = args["agent"] + "_" + str(args["episode"]) + ".log"
-    logging.basicConfig(filename=f_name, filemode='w', level=logging.INFO)
+    logging.basicConfig(filename=f_name, filemode='w', 
+        level=get_log_level(args["log"]))
     
-    player = get_agent(args["agent"])
+    player = get_agent(args)
     player.simulate(args["episode"])
 
-    if args["plot_v"] and args["agent"] == "mc":
+    if args["plot_v"] and args["agent"] != "random":
         plot_v(player)
                 
     

@@ -13,13 +13,13 @@ class Player(object):
         self.rng = np.random.RandomState()
         game = Game(self.rng)
         state = (False, game.player.hand_sum, game.dealer.hand_sum, 0)
-        logger.info('Initial: ' + str(state))
+        logger.debug('Initial: ' + str(state))
 
         while not state[0]:
             a = self.action()
-            logger.info('Action: ' + a)
+            logger.debug('Action: ' + a)
             state = game.step(a)
-            logger.info('State: ' + str(state))
+            logger.debug('State: ' + str(state))
 
         return state[-1]
 

@@ -21,13 +21,13 @@ class MonteCarloPlayer(Player):
         self.rng = np.random.RandomState()
         game = Game(self.rng)
         state = (False, game.player.hand_sum, game.dealer.hand_sum, 0)
-        logger.info("Initial: " + str(state))
+        logger.debug("Initial: " + str(state))
         
         path = OrderedDict()
 
         while not state[0]:
             a = self.action(state)
-            logger.info('Action: ' + a)
+            logger.debug('Action: ' + a)
 
             s = state[1:3]
             state = game.step(a)
@@ -35,7 +35,7 @@ class MonteCarloPlayer(Player):
             if not s in path.keys():
                 path[(s[0], s[1], a)] = r
             
-            logger.info('State: ' + str(state))
+            logger.debug('State: ' + str(state))
 
         self.update(path)
 
@@ -58,7 +58,7 @@ class MonteCarloPlayer(Player):
     def action(self, state):
         rnd = self.rng.rand()
         eps = 100.0 / (100.0 + self.N[(state[1], state[2])])
-        logger.info("Epsilon: " + str(eps))
+        logger.debug("Epsilon: " + str(eps))
         
         if rnd < eps:
             rnd = self.rng.randint(2)

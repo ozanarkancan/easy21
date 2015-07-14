@@ -40,18 +40,18 @@ class Game(object):
         reward = 0
         if action == "hit":
             card = self.draw_a_card()
-            logger.info("Card: " + str(card))
+            logger.debug("Card: " + str(card))
             
             self.player.add_card(card)
             if self.player.hand_sum < 1 or self.player.hand_sum > 21:
                 reward = -1
                 terminal = True
         else:#stick
-            logger.info("Dealer Turn: ")
+            logger.debug("Dealer Turn: ")
 
             while not terminal:
                 card = self.draw_a_card()
-                logger.info("Card: " + str(card))
+                logger.debug("Card: " + str(card))
                 
                 self.dealer.add_card(card)
                 if self.dealer.hand_sum < 1 or self.dealer.hand_sum > 21:
@@ -59,9 +59,9 @@ class Game(object):
                     terminal = True
                 elif self.dealer.hand_sum >= 17:
                     terminal = True
-                    logger.info("Action: stick")
+                    logger.debug("Action: stick")
                 else:
-                    logger.info("Action: hit")
+                    logger.debug("Action: hit")
             if reward == 0:
                 reward = self.result()
         return (terminal, self.player.hand_sum, self.dealer.hand_sum, reward)
