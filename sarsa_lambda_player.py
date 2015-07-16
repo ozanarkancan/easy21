@@ -35,7 +35,6 @@ class SarsaLambdaPlayer(Player):
         while not state[0]:
             logger.debug('Action: ' + a)
 
-            s = state[1:3]
             state_prime = game.step(a)
             r = state_prime[-1]
             a_prime = self.action(state_prime)

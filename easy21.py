@@ -2,6 +2,7 @@ import numpy as np
 from montecarlo_player import *
 from random_player import *
 from sarsa_lambda_player import *
+from func_approximation_player import *
 import logging
 import argparse
 import pylab as p
@@ -40,6 +41,8 @@ def get_agent(args):
         return MonteCarloPlayer()
     elif agent_type == "sarsa":
         return SarsaLambdaPlayer(args["lambda"], args["gamma"])
+    elif agent_type == "approximation":
+        return FuncApproximationPlayer(args["lambda"], args["gamma"])
     else:
         return RandomPlayer()
 
@@ -78,4 +81,3 @@ if __name__ == "__main__":
     if args["plot_v"] and args["agent"] != "random":
         plot_v(player)
                 
-    
